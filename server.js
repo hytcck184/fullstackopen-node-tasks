@@ -1,4 +1,5 @@
-const http = require("http")
+const express = require("express")
+const app = express()
 
 const phonebook = [
     { 
@@ -22,11 +23,24 @@ const phonebook = [
         "number": "39-23-6423122"
       }
 ]
+app.get("/",(req,res)=> {
+    res.json(phonebook)
+})
 
-const app = http.createServer((req,res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" })
-    res.write("Hello")
-    res.end(JSON.stringify(phonebook))
-}).listen(3000,()=> {
+app.get("/info", (req,res) => {
+    const amount = Object.keys(phonebook).length
+    const time = new Date().toDateString()
+    res.send(`Phonebook has info for ${amount} people`, `${time}`)
+})
+
+app.get("/time", (req,res) => {
+    const amount = Object.keys(phonebook).length
+    const time = new Date().toDateString()
+    res.send(<h2>${time}</h2>)
+
+})
+
+
+app.listen(3000,()=> {
     console.log("Server is running on port 3000!")
 })
