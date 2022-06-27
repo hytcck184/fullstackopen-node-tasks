@@ -1,5 +1,6 @@
 const express = require("express")
 const app = express()
+app.use(express.json())
 
 let phonebook = [
     { 
@@ -54,6 +55,21 @@ app.delete("/api/phonebook/:id",(req,res)=> {
     const id = Number(req.params.id)
     phonebook = phonebook.filter(elem => elem.id !== id)
     res.status(204).end()
+})
+
+
+app.post("/api/phonebook", (req,res) => {
+    let { name, number} = req.body
+
+    const newUser = {
+        id: phonebook.length + 1,
+        name: name,
+        number: number
+        
+    }
+
+    phonebook.push(newUser)
+    res.json(phonebook)
 })
 
 app.listen(3000,()=> {
