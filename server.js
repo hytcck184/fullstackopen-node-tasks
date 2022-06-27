@@ -23,23 +23,32 @@ const phonebook = [
         "number": "39-23-6423122"
       }
 ]
-app.get("/",(req,res)=> {
+app.get("/api/phonebook",(req,res)=> {
     res.json(phonebook)
 })
 
 app.get("/info", (req,res) => {
     const amount = Object.keys(phonebook).length
     const time = new Date().toDateString()
-    res.send(`Phonebook has info for ${amount} people`, `${time}`)
-})
-
-app.get("/time", (req,res) => {
-    const amount = Object.keys(phonebook).length
-    const time = new Date().toDateString()
-    res.send(<h2>${time}</h2>)
+    res.send(`Phonebook has info for ${amount} people \n` `${time}`)
 
 })
 
+app.get("/api/phonebook/:id", (req,res) => {
+    const getID = Number(req.params.id)
+    const getOne = phonebook.find(elem => elem.id === getID)
+
+    if(getOne){
+        res.json(getOne)
+    } else{
+        res.status(400).send({
+            error: {
+                msg: "Bad request"
+            }
+        })
+    }
+    
+})
 
 app.listen(3000,()=> {
     console.log("Server is running on port 3000!")
