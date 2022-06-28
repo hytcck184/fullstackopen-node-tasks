@@ -61,6 +61,17 @@ app.delete("/api/phonebook/:id",(req,res)=> {
 app.post("/api/phonebook", (req,res) => {
     let { name, number} = req.body
 
+    if(!number || !name) {
+        return res.status(400).send({
+            error: "No content"
+        })
+    } else if (phonebook.some(elem => elem.name == name)) {
+        return res.status(400).send({
+            error: "Name must be unique"
+        })
+    }
+
+
     const newUser = {
         id: phonebook.length + 1,
         name: name,
